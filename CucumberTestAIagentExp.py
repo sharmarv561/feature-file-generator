@@ -328,20 +328,20 @@ def lambda_handler(event, context):
                 }
             
             # #send email
-            # ses_response = send_email_with_attachment(s3_bucket, s3_response['s3_key'], body.get('recipient-email'))
-            # if not ses_response['success']:
-            #     logger.error(f"Failed to send email: {ses_response.get('error')}")
-            #     return {
-            #         'statusCode': 500,
-            #         'headers': {
-            #             'Content-Type': 'application/json',
-            #                'Access-Control-Allow-Origin': '*'
-            #         },
-            #         'body': json.dumps({
-            #             'error': f"Failed to send email: {ses_response.get('error')}",
-            #             'story': test_cases
-            #         })
-            #     }
+            ses_response = send_email_with_attachment(s3_bucket, s3_response['s3_key'], body.get('recipient-email'))
+            if not ses_response['success']:
+                logger.error(f"Failed to send email: {ses_response.get('error')}")
+                return {
+                    'statusCode': 500,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                           'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({
+                        'error': f"Failed to send email: {ses_response.get('error')}",
+                        'story': test_cases
+                    })
+                }
 
             # Success response
             return {
