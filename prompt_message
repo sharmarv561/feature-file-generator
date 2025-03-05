@@ -1,0 +1,148 @@
+{
+  "recipient-email": "ina.kachhal@gmail.com",
+  "body": {
+    "prompt_messsage": "Generate a Gherkin feature file for testing the /article POST endpoint of the userConfig API. The test cases should validate the response's JSON schema, the correct user-id in the response, and a 200 status code. Include header validation for trace-id, user-id, and request-date-time, as well as mandatory field validation in the request body. Include scenarios for missing or invalid trace-id, user-id, and request-date-time. Use Given, When, Then format, with placeholders for dynamic values. Ensure missing headers or fields result in valid error responses"
+  },
+  "open_api_spec": {
+    "openapi": "3.0.1",
+    "paths": {
+      "/article": {
+        "post": {
+          "operationId": "postArticle",
+          "parameters": [
+            {
+              "name": "trace-id",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "user-id",
+              "in": "header",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleDetailsInputModel"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "description": "201 response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ArticleDetailsInputModel"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "400 response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "404 response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "422 response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "500 response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "x-amazon-apigateway-integration": {
+            "httpMethod": "POST",
+            "uri": "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-south-1:891377030308:function:post_article_module/invocations",
+            "responses": {
+              "default": {
+                "statusCode": "200"
+              }
+            },
+            "passthroughBehavior": "when_no_match",
+            "timeoutInMillis": 29000,
+            "contentHandling": "CONVERT_TO_TEXT",
+            "type": "aws_proxy"
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Article": {
+          "type": "object",
+          "properties": {
+            "article_id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "article_name_en": {
+              "type": "string"
+            },
+            "article_name_hi": {
+              "type": "string"
+            },
+            "is_deleted": {
+              "type": "boolean"
+            },
+            "icon_path": {
+              "type": "string"
+            },
+            "article_type_id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "god_id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "is_favourite": {
+              "type": "boolean"
+            },
+            "article_text": {
+              "$ref": "#/components/schemas/ArticleText"
+            }
+          }
+        }
+      }
+    }
+  }
+}
